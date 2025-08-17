@@ -1,7 +1,14 @@
+import locale
+import sys
+import os
 import csv
 import datetime as dt
-from config.settings import CSV_PATH
 
+
+locale.setlocale(locale.LC_TIME, "fr_FR.UTF-8")
+
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+from config.settings import CSV_PATH
 
 def download_planning_csv():
     """
@@ -41,14 +48,30 @@ def get_daily_information(day_name):
             return jour
     return {}
 
-def create_message():
+def get_all_information(day=None):
     """
-    A partir des informations du jour, crée le message à envoyer.
+    Récupère toutes les informations pour un jour donné.
+
+    Args:
+        day (str, optional): Jour spécifique, sinon aujourd'hui
 
     Returns:
-       list[str,str,str,str,str] ex: ["lundi","pates","soupe","12h medecin"]
+        dict: Toutes les informations du jour formatées
+
+    Example:
+        >>> get_all_information()
+        {
+            'jour': 'lundi',
+            'midi': 'pâtes carbonara',
+            'soir': 'salade de quinoa',
+            'rendezvous': 'médecin 14h'
+        }
     """
-    current_day = dt.date.today().strftime("%A").lower()
+
+    if day is None:
+        current_day = dt.date.today().strftime("%A").lower()
+    else:
+        current_day = day.lower()
 
     daily_planning = get_daily_information(current_day)
 
@@ -56,5 +79,22 @@ def create_message():
     evening = daily_planning.get("Menu du soir", "").strip() or "Pas de repas prévu"
     meeting = daily_planning.get("Rendez-vous", "").strip() or "Pas de rdv"
 
-    messsage = [current_day, midi, evening, meeting]
-    return messsage
+    message={
+        'jour' : current_day,
+        'midi' : midi,
+        'soir' : evening,
+        'rendez-vous': meeting
+        }
+
+    return message
+
+if __name__ == "__main__":
+    info = get_all_information()
+    print(f"Jour : {info['jour']}")
+    print(f"Midi : {info['midi']}")
+    print(f"Soir : {info['soir']}")
+    print(f"RDV : {info['rendez-vous']}")
+
+    # Test pour un autre jour
+    info_mardi = get_all_information("mardi")
+    print(f"Mardi midi : {info_mardi['midi']}")
