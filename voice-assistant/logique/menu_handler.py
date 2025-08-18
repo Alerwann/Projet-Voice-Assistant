@@ -1,6 +1,6 @@
-from csv_reader import get_all_information
+from logique.csv_reader import get_all_information
 
-def genrerate_voice_response(day=None):
+def generate_voice_response(day=None):
     """
     Génère les phrases réponse selon le jour.
     Si l'utilisateur ne donne pas de date, donne les informations d'aujourd'hui
@@ -29,6 +29,3 @@ def genrerate_voice_response(day=None):
                      "global": resume_complet}
 
     return response_to_say
-
-
-
