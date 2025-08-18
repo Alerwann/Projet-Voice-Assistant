@@ -75,9 +75,9 @@ def get_all_information(day=None):
 
     daily_planning = get_daily_information(current_day)
 
-    midi = daily_planning.get("Menu du midi", "").strip() or "Pas de repas à midi"
-    evening = daily_planning.get("Menu du soir", "").strip() or "Pas de repas prévu"
-    meeting = daily_planning.get("Rendez-vous", "").strip() or "Pas de rdv"
+    midi = daily_planning.get("Menu du midi", "").strip() or "Pas de repas"
+    evening = daily_planning.get("Menu du soir", "").strip() or "Pas de repas "
+    meeting = daily_planning.get("Rendez-vous", "").strip() or "aucun rendez-vous"
 
     message={
         'jour' : current_day,
@@ -88,13 +88,6 @@ def get_all_information(day=None):
 
     return message
 
-if __name__ == "__main__":
-    info = get_all_information()
-    print(f"Jour : {info['jour']}")
-    print(f"Midi : {info['midi']}")
-    print(f"Soir : {info['soir']}")
-    print(f"RDV : {info['rendez-vous']}")
 
-    # Test pour un autre jour
-    info_mardi = get_all_information("mardi")
-    print(f"Mardi midi : {info_mardi['midi']}")
+    
+
